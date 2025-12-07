@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermercado Compre Mais - A Nossa Família Atende A Sua!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D32F2F;
+            --primary-light: #E53935;
+            --accent: #ffd000;
+            --cream: #FFF9E6;
+            --warm-white: #FFFFFF;
+            --text-dark: #1a1a1a;
+            --text-light: #666;
+            --shadow: rgba(211, 47, 47, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            background: var(--warm-white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #B71C1C 100%);
+            color: white;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 300px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-logo {
+            max-width: 400px;
+            width: 90%;
+            margin: 0 auto 2rem;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            background: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* História Section */
+        .historia {
+            padding: 100px 20px;
+            background: var(--cream);
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        .historia-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .historia-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        /* Produtos Section */
+        .produtos {
+            padding: 100px 20px;
+            background: white;
+        }
+
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Responsivo para telas menores */                                                                             
+        @media (max-width: 768px) {
+            .produtos-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+        }
+
+        .produto-card {
+            background: var(--cream);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .produto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .produto-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .produto-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(211, 47, 47, 0.2);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFFFFF 100%);
+        }
+
+        .produto-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .produto-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .produto-desc {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .destaque {
+            background: linear-gradient(135deg, var(--accent), #ff8559);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        /* Galeria de Carnes */
+        .galeria {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .galeria-item {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(211, 47, 47, 0.25);
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .galeria-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(211, 47, 47, 0.95), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .galeria-item:hover .galeria-overlay {
+            transform: translateY(0);
+        }
+
+        .galeria-overlay h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        /* Localização Section */
+        .localizacao {
+            padding: 100px 20px;
+            background: var(--primary);
+            color: white;
+        }
+
+        .localizacao .section-title {
+            color: white;
+        }
+
+        .localizacao .section-title::after {
+            background: var(--accent);
+        }
+
+        .localizacao-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .endereco-info {
+            font-size: 1.2rem;
+            line-height: 2;
+        }
+
+        .endereco-info strong {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .mapa-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            height: 400px;
+        }
+
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            padding: 80px 20px;
+            background: var(--cream);
+            text-align: center;
+        }
+
+        .footer-cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .footer-cta p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .localizacao-content {
+                grid-template-columns: 1fr;
+            }
+
+            .produtos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 80px 20px 60px;
+            }
+
+            .hero-logo {
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="cidadealta.png" alt="Supermercado Compre Mais" class="hero-logo">
+            <h1 class="logo">Supermercado Compre Mais</h1>
+            <p class="tagline">Nossa Família Atendendo a Sua</p>
+            <a href="#" class="cta-button" id="whatsapp-btn">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Receber Ofertas no WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- História Section -->
+    <section class="historia">
+        <div class="container">
+            <h2 class="section-title fade-in">Nossa História</h2>
+            <div class="historia-content fade-in">
+                <p class="historia-text">
+                    O <strong>Supermercado Compre Mais</strong> nasceu do sonho de servir a comunidade de Maringá com produtos de qualidade e atendimento familiar. 
+                </p>
+                <p class="historia-text">
+                    Ao longo dos anos, nos tornamos referência no bairro, conquistando a confiança dos nossos clientes através do compromisso com o frescor dos produtos e preços justos. Aqui, você não é apenas um cliente — você faz parte da nossa família.
+                </p>
+                <p class="historia-text">
+                    Venha conhecer a diferença de um mercado que valoriza cada pessoa que passa pela nossa porta!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria de Carnes -->
+    <section class="galeria">
+        <div class="container">
+            <h2 class="section-title fade-in" style="color: var(--primary);">Carnes de Qualidade</h2>
+            <div class="galeria-grid">
+                <div class="galeria-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&h=400&fit=crop" alt="Carnes frescas no açougue">
+                    <div class="galeria-overlay">
+                        <h4>Sempre Frescas</h4>
+                        <p>Desossadas na hora</p>
+                    </div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1723893905879-0e309c2a8e06?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FybmVzJTIwYm92aW5hc3xlbnwwfHwwfHx8MA%3D%3D" alt="Cortes especiais de carne">
+                    <div class="galeria-overlay">
+                        <h4>Cortes Especiais</h4>
+                        <p>Do jeito que você prefere</p>
+                    </div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1602470521006-59ab77068b0d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNhcm5lcyUyMGJvdmluYXN8ZW58MHx8MHx8fDA%3D" alt="Carne premium">
+                    <div class="galeria-overlay">
+                        <h4>Qualidade Premium</h4>
+                        <p>Seleção rigorosa</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Hortifruiti Galeria-->
+    <section class="galeria">
+        <div class="container">
+            <h2 class="section-title fade-in" style="color: var(--primary);">Hortifruit - Terça e Quarta Verde</h2>
+            <div class="galeria-grid">
+                <div class="galeria-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1717625940956-421a56f5bdc8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fGZydXRhc3xlbnwwfDJ8MHx8fDA%3D" alt="Frutas">
+                    <div class="galeria-overlay">
+                        <h4>Frutas Fresquinhas</h4>
+                        <p>Diretamente do Produtor</p>
+                    </div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://plus.unsplash.com/premium_photo-1723377607590-5aac4e48bb06?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHZlZ2V0YWlzfGVufDB8MnwwfHx8MA%3D%3D" alt="Tomates">
+                    <div class="galeria-overlay">
+                        <h4>Hortifruiti Fresquinho</h4>
+                        <p>Do jeito que você gosta!</p>
+                    </div>
+                </div>
+                <div class="galeria-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1604880285069-e535d08ecfd2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGhvcnRhbGljaWFzfGVufDB8MnwwfHx8MA%3D%3D" alt="Hortalicias">
+                    <div class="galeria-overlay">
+                        <h4>Produtos Selecionados</h4>
+                        <p>Seleção rigorosa</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos Section -->
+    <section class="produtos">
+        <div class="container">
+            <h2 class="section-title fade-in">Nossos Produtos</h2>
+            <div class="produtos-grid">
+                <div class="produto-card fade-in">
+                    <span class="produto-icon">🥩</span>
+                    <h3 class="produto-title">Açougue</h3>
+                    <p class="produto-desc">Carnes de primeira qualidade, sempre frescas e desossadas na hora, do jeito que você precisa.</p>
+                </div>
+
+                <div class="produto-card fade-in">
+                    <span class="produto-icon">🥬</span>
+                    <h3 class="produto-title">HortiFruit</h3>
+                    <p class="produto-desc">Frutas e verduras fresquinhas toda terça e quarta-feira!</p>
+                    <span class="destaque">Terça e Quarta Verde 🌱</span>
+                </div>
+
+                <div class="produto-card fade-in">
+                    <span class="produto-icon">🛒</span>
+                    <h3 class="produto-title">Mercearia</h3>
+                    <p class="produto-desc">Produtos gerais de mercearia com variedade e qualidade para o seu dia a dia.</p>
+                </div>
+
+                <div class="produto-card fade-in">
+                    <span class="produto-icon">🍺</span>
+                    <h3 class="produto-title">Cerveja Gelada</h3>
+                    <p class="produto-desc">A cerveja mais gelada do bairro! Perfeita para qualquer momento.</p>
+                    <span class="destaque">Sempre Gelada! ❄️</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Localização Section -->
+    <section class="localizacao">
+        <div class="container">
+            <h2 class="section-title fade-in">Onde Estamos</h2>
+            <div class="localizacao-content">
+                <div class="endereco-info fade-in">
+                    <strong>📍 Venha nos visitar!</strong>
+                    <p>
+                        Av. Carmen Miranda, 2175<br>
+                        Maringá - PR
+                    </p>
+                    <p style="margin-top: 30px; opacity: 0.9;">
+                        Estamos de portas abertas para receber você e sua família com o melhor atendimento!
+                    </p>
+                </div>
+                <div class="mapa-container fade-in">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3661.4866775389597!2d-51.94410892378805!3d-23.41059995724848!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ecd0e4a5d6e7c7%3A0x8e8b8f8f8e8b8f8f!2sAv.%20Carmen%20Miranda%2C%202175%20-%20Maring%C3%A1%2C%20PR!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="container">
+            <h2 class="fade-in">Não Perca Nossas Ofertas!</h2>
+            <p class="fade-in">Entre no nosso grupo do WhatsApp e receba as melhores promoções em primeira mão</p>
+            <a href="#" class="cta-button" id="whatsapp-btn-footer">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Entrar no Grupo
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Supermercado Compre Mais - Todos os direitos reservados</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Av. Carmen Miranda, 2175 - Maringá, PR</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // WhatsApp link (você vai adicionar o link do grupo aqui)
+        const whatsappLink = 'https://chat.whatsapp.com/D22zuzyqbd78N4u41luPZL'; // Substitua pelo link do grupo
+        
+        document.getElementById('whatsapp-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open(whatsappLink, '_blank');
+        });
+
+        document.getElementById('whatsapp-btn-footer').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open(whatsappLink, '_blank');
+        });
+    </script>
+</body>
+</html>
