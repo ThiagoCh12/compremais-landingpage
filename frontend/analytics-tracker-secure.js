@@ -11,7 +11,7 @@
     // CONFIGURAÇÃO (apenas URL da API)
     // ============================================
     
-    const API_URL = 'http://localhost:5000'; // Backend local
+    const API_URL = 'https://compremais-landingpage.onrender.com'; // Backend 
     
     // Session ID gerado no cliente (não expõe dados sensíveis)
     const SESSION_ID = generateSessionId();
