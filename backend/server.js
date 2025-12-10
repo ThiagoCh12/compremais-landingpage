@@ -674,3 +674,22 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app; // Para testes
+
+// TEMPORÁRIO - Criar admin automaticamente
+async function createDefaultAdmin() {
+    const User = mongoose.model('User');
+    const exists = await User.findOne({ username: 'admin' });
+    if (!exists) {
+        const bcrypt = require('bcryptjs');
+        const hashedPassword = await bcrypt.hash('Admin@2024', 12);
+        await User.create({
+            username: 'admin',
+            password: hashedPassword,
+            role: 'admin'
+        });
+        console.log('✓ Admin criado: username=admin, password=Admin@2024');
+    }
+}
+
+// Chame após conectar ao MongoDB
+mongoose.connection.once('open', createDefaultAdmin);
