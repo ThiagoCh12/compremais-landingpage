@@ -19,6 +19,7 @@ const Joi = require('joi');
 require('dotenv').config();
 
 const app = express();
+app.set('trust proxy', 1); // ← ADICIONE ESTA LINHA
 
 // ============================================
 // CONFIGURAÇÕES DE SEGURANÇA
