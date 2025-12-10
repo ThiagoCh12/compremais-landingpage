@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analytics - Compre Mais</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #D32F2F;
+            --primary-dark: #B71C1C;
+            --accent: #ffd000;
+            --success: #00C853;
+            --bg-dark: #0A0E27;
+            --bg-card: #151B3D;
+            --bg-card-hover: #1A2248;
+            --text-primary: #FFFFFF;
+            --text-secondary: #8B93B0;
+            --border: #2A3356;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0A0E27 0%, #0F1534 50%, #0A0E27 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Login */
+        .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 16px;
+        }
+        .login-title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 8px; }
+        .login-subtitle { color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 32px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+        }
+        .error-message {
+            background: rgba(255, 82, 82, 0.15);
+            color: #FF5252;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error-message.show { display: block; }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-login:hover:not(:disabled) { transform: translateY(-2px); }
+        .btn-login:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* Header */
+        .header {
+            padding: 32px 0;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo-section { display: flex; align-items: center; gap: 16px; }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .logo-text h1 { font-size: 24px; font-weight: 700; }
+        .logo-text p { font-size: 14px; color: var(--text-secondary); }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+            border-color: var(--primary);
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: rgba(211, 47, 47, 0.15);
+            margin-bottom: 16px;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .stat-value { font-size: 36px; font-weight: 700; margin-bottom: 4px; }
+        .stat-detail { font-size: 12px; color: var(--text-secondary); }
+        
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .chart-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+        .chart-container { position: relative; height: 300px; }
+        
+        /* Table */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+        .table-header { padding: 24px; border-bottom: 1px solid var(--border); }
+        .table-title { font-size: 20px; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: var(--bg-dark); }
+        th {
+            padding: 16px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        td { padding: 16px 24px; border-top: 1px solid var(--border); font-size: 14px; }
+        tbody tr:hover { background: var(--bg-card-hover); }
+        .location-badge {
+            display: inline-flex;
+            padding: 4px 12px;
+            background: rgba(255, 208, 0, 0.15);
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .device-badge {
+            display: inline-flex;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .device-badge.mobile { background: rgba(0, 200, 83, 0.15); color: var(--success); }
+        .device-badge.desktop { background: rgba(33, 150, 243, 0.15); color: #42A5F5; }
+        
+        .hidden { display: none !important; }
+        .loading { text-align: center; padding: 60px; }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 768px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-logo">🔐</div>
+            <h1 class="login-title">Dashboard Analytics</h1>
+            <p class="login-subtitle">Supermercado Compre Mais</p>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" id="username" class="form-input" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="password" class="form-input" required placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn-login" id="loginBtn">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardScreen" class="hidden">
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <h1>Analytics Dashboard</h1>
+                            <p>Supermercado Compre Mais</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="logoutBtn">🚪 Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-label">Visitantes Únicos</div>
+                    <div class="stat-value" id="totalVisitors">0</div>
+                    <div class="stat-detail">Total de IPs únicos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-label">Cliques WhatsApp</div>
+                    <div class="stat-value" id="whatsappClicks">0</div>
+                    <div class="stat-detail" id="conversionRate">Taxa: 0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-label">Cidade Principal</div>
+                    <div class="stat-value" style="font-size: 24px;" id="topCity">-</div>
+                    <div class="stat-detail" id="topCityCount">0 visitantes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">Total de Eventos</div>
+                    <div class="stat-value" id="totalEvents">0</div>
+                    <div class="stat-detail">Visualizações + Cliques</div>
+                </div>
+            </section>
+
+            <section class="charts-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">Dispositivos</h3>
+                    <div class="chart-container">
+                        <canvas id="devicesChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Top 5 Cidades</h3>
+                    <div class="chart-container">
+                        <canvas id="citiesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="table-card">
+                <div class="table-header">
+                    <h3 class="table-title">Atividade Recente</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Evento</th>
+                            <th>Localização</th>
+                            <th>Dispositivo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentActivity">
+                        <tr><td colspan="4" class="loading"><div class="spinner"></div>Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        
+        class AuthManager {
+            constructor() {
+                this.token = localStorage.getItem('auth_token');
+            }
+            async login(username, password) {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Erro ao fazer login');
+                }
+                const data = await response.json();
+                this.token = data.token;
+                localStorage.setItem('auth_token', this.token);
+                return true;
+            }
+            logout() {
+                localStorage.removeItem('auth_token');
+                location.reload();
+            }
+            getToken() { return this.token; }
+        }
+        
+        class ApiClient {
+            constructor(auth) { this.auth = auth; }
+            async request(endpoint) {
+                const response = await fetch(`${API_URL}${endpoint}`, {
+                    headers: { 'Authorization': `Bearer ${this.auth.getToken()}` }
+                });
+                if (!response.ok) throw new Error('Erro na requisição');
+                return await response.json();
+            }
+            async getStats() { return this.request('/api/dashboard/stats'); }
+            async getRecentEvents() { return this.request('/api/dashboard/recent?limit=50'); }
+        }
+        
+        const auth = new AuthManager();
+        const api = new ApiClient(auth);
+        let devicesChart, citiesChart;
+        
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Entrando...';
+            errorMsg.classList.remove('show');
+            
+            try {
+                await auth.login(username, password);
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboardScreen').classList.remove('hidden');
+                initDashboard();
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.classList.add('show');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Entrar';
+            }
+        });
+        
+        async function initDashboard() {
+            document.getElementById('logoutBtn').addEventListener('click', () => auth.logout());
+            await loadDashboardData();
+        }
+        
+        async function loadDashboardData() {
+            try {
+                const [stats, events] = await Promise.all([api.getStats(), api.getRecentEvents()]);
+                updateStats(stats.data);
+                updateCharts(stats.data);
+                updateRecentActivity(events.data);
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao carregar dados');
+            }
+        }
+        
+        function updateStats(data) {
+            document.getElementById('totalVisitors').textContent = data.uniqueVisitors || 0;
+            document.getElementById('whatsappClicks').textContent = data.whatsappClicks || 0;
+            document.getElementById('totalEvents').textContent = data.totalEvents || 0;
+            document.getElementById('conversionRate').textContent = `Taxa: ${data.conversionRate || 0}%`;
+            if (data.topCities?.length > 0) {
+                document.getElementById('topCity').textContent = data.topCities[0].city;
+                document.getElementById('topCityCount').textContent = `${data.topCities[0].count} visitantes`;
+            }
+        }
+        
+        function updateCharts(data) {
+            const devicesCtx = document.getElementById('devicesChart');
+            if (devicesChart) devicesChart.destroy();
+            const deviceData = data.devices || [];
+            devicesChart = new Chart(devicesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: deviceData.map(d => d._id),
+                    datasets: [{ data: deviceData.map(d => d.count), backgroundColor: ['#00C853', '#42A5F5', '#BA68C8'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            const citiesCtx = document.getElementById('citiesChart');
+            if (citiesChart) citiesChart.destroy();
+            const cities = data.topCities || [];
+            citiesChart = new Chart(citiesCtx, {
+                type: 'bar',
+                data: {
+                    labels: cities.map(c => c.city),
+                    datasets: [{ label: 'Visitantes', data: cities.map(c => c.count), backgroundColor: '#D32F2F' }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+        
+        function updateRecentActivity(events) {
+            const tbody = document.getElementById('recentActivity');
+            tbody.innerHTML = '';
+            if (!events?.length) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;">Nenhum evento registrado</td></tr>';
+                return;
+            }
+            events.forEach(event => {
+                const date = new Date(event.timestamp);
+                const eventName = event.type === 'page_view' ? '👁️ Visualização' : '💬 Clique WhatsApp';
+                const location = `${event.location.city}, ${event.location.region}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-family: 'IBM Plex Mono', monospace;">${date.toLocaleString('pt-BR')}</td>
+                    <td><strong>${eventName}</strong></td>
+                    <td><span class="location-badge">📍 ${location}</span></td>
+                    <td><span class="device-badge ${event.device.type.toLowerCase()}">${event.device.type}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        if (auth.getToken()) {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            initDashboard();
+        }
+    </script>
+</body>
+</html>
