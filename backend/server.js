@@ -675,6 +675,3 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app; // Para testes
-
-// Chame após conectar ao MongoDB
-mongoose.connection.once('open', createDefaultAdmin);
